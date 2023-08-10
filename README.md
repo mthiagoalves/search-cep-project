@@ -4,9 +4,9 @@ Este projeto consiste em uma aplicação Full Stack desenvolvida com Laravel (ba
 
 ## Requisitos
 
-- PHP >= 7.4
+- PHP >^= 9
 - Composer
-- Node.js >= 14
+- Node.js >^= 14
 - npm
 - Banco de dados MySQL ou outro suportado pelo Laravel
 
@@ -15,7 +15,7 @@ Este projeto consiste em uma aplicação Full Stack desenvolvida com Laravel (ba
 1. Clone este repositório para a sua máquina:
 
 ```bash
-git clone https://github.com/mthiagoalves/search-cep-test
+git clone https://github.com/mthiagoalves/search-cep-project
 cd nome-do-projeto
 ```
 
@@ -57,12 +57,11 @@ php artisan serve
 2. Inicie o servidor frontend (Vue.js):
 
 ```bash
-npm run serve
+npm start dev
 ```
 
 🟩 Acesse a aplicação no navegador:
-    Backend: http://localhost:8000
-    Frontend: http://localhost:8080
+    http://localhost:8000
 
 ## Uso
 

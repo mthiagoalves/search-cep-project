@@ -21,7 +21,7 @@ defineProps({
 
 <template>
     <Head title="Welcome" />
-
+        <h1>chatba de mesquita</h1>
 </template>
 
 <style>
