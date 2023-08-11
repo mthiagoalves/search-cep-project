@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
-    public function getAllCeps() {
+    public function getAllCeps()
+    {
         $allCeps = CepRepository::getAllCeps();
 
         if (count($allCeps) === 0) {
@@ -16,24 +17,26 @@ class FrontendController extends Controller
         } else {
             return response()->json($allCeps, 200);
         }
-
     }
 
-    public function getOneCep($cep) {
+    public function getOneCep($cep)
+    {
 
         $cep = CepRepository::getOneCep($cep);
 
         return response()->json($cep, 200);
     }
 
-    public function createAddress(Request $dataRequest) {
+    public function createAddress(Request $dataRequest)
+    {
 
         $address = CepRepository::createAddress($dataRequest);
 
         return response()->json($address, 200);
     }
 
-    public function updateAddress(Request $dataRequest, $cep) {
+    public function updateAddress(Request $dataRequest, $cep)
+    {
 
         $address = CepRepository::updateAddress($dataRequest, $cep);
 

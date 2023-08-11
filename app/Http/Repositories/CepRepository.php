@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Validator;
 
 class CepRepository
 {
-    public static function getAllCeps() {
+    public static function getAllCeps()
+    {
         return Address::all();
     }
 
-    public static function getOneCep($cep) {
+    public static function getOneCep($cep)
+    {
         $findedCep = Address::where('cep', $cep)->get();
 
         if ($findedCep->isEmpty()) {
@@ -35,7 +37,8 @@ class CepRepository
         return $findedCep;
     }
 
-    public static function createAddress($dataRequest){
+    public static function createAddress($dataRequest)
+    {
 
         $data = $dataRequest->all();
 
@@ -59,7 +62,8 @@ class CepRepository
         return $newAddress;
     }
 
-    public static function updateAddress($dataRequest, $cep) {
+    public static function updateAddress($dataRequest, $cep)
+    {
         $data = $dataRequest->all();
 
         $dataAddress = Validator::make($data, [
