@@ -8,6 +8,18 @@ use Illuminate\Support\Facades\Validator;
 
 class CepRepository
 {
+
+    private static function validateCep($cep)
+    {
+        $cep = preg_replace('/\D/', '', $cep);
+
+        if (strlen($cep) !== 8) {
+            return ['message' => 'CEP inválido, insira um CEP de 8 números.'];
+        }
+
+        return null;
+    }
+
     public static function getAllCeps()
     {
         return Address::all();
@@ -15,6 +27,11 @@ class CepRepository
 
     public static function getOneCep($cep)
     {
+        $validationResult = self::validateCep($cep);
+        if ($validationResult) {
+            return $validationResult;
+        }
+
         $findedCep = Address::where('cep', $cep)->get();
 
         if ($findedCep->isEmpty()) {
@@ -36,6 +53,7 @@ class CepRepository
 
         return $findedCep;
     }
+
 
     public static function createAddress($dataRequest)
     {
@@ -64,6 +82,11 @@ class CepRepository
 
     public static function updateAddress($dataRequest, $cep)
     {
+        $validationResult = self::validateCep($cep);
+        if ($validationResult) {
+            return $validationResult;
+        }
+
         $data = $dataRequest->all();
 
         $dataAddress = Validator::make($data, [
@@ -80,17 +103,30 @@ class CepRepository
             return ['success' => false, 'message' => 'Erro de validação', 'errors' => $errors->all()];
         }
 
-        $updatedRows = Address::where('cep', $cep)->update($dataAddress->validated());
+        $address = Address::where('cep', $cep)->first();
 
-        if ($updatedRows > 0) {
+        if (!$address) {
+            return ['success' => false, 'message' => 'Endereço não encontrado'];
+        }
+
+        $address->fill($dataAddress->validated());
+
+        if ($address->save()) {
             return ['success' => true, 'message' => 'Endereço atualizado com sucesso'];
         } else {
-            return ['success' => false, 'message' => 'Nenhum endereço foi atualizado'];
+            return ['success' => false, 'message' => 'Erro ao atualizar o endereço'];
         }
     }
 
-    public static function deleteAddress($cep) {
-        
+
+    public static function deleteAddress($cep)
+    {
+
+        $validationResult = self::validateCep($cep);
+        if ($validationResult) {
+            return $validationResult;
+        }
+
         $address = Address::where('cep', $cep)->first();
 
         if (!$address) {
@@ -103,5 +139,4 @@ class CepRepository
             return ['success' => false, 'message' => 'Erro ao excluir o endereço'];
         }
     }
-
 }
