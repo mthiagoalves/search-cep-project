@@ -2,14 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CepRepository;
+use App\Http\Repositories\CepRepository;
+
+use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
     public function getAllCeps() {
         $allCeps = CepRepository::getAllCeps();
 
-        dd($allCeps);
-        
+        if (count($allCeps) === 0) {
+            return response()->json(['message' => 'Nenhum CEP encontrado no banco de dados'], 404);
+        } else {
+            return response()->json($allCeps, 200);
+        }
+
+    }
+
+    public function getOneCep($cep) {
+
+        $cep = CepRepository::getOneCep($cep);
+
+        return response()->json($cep, 200);
+    }
+
+    public function createAddress(Request $dataRequest) {
+
+        $address = CepRepository::createAddress($dataRequest);
+
+        return response()->json($address, 200);
+
     }
 }
