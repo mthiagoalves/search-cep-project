@@ -22,25 +22,25 @@ class FrontendController extends Controller
     public function getOneCep($cep)
     {
 
-        $cep = CepRepository::getOneCep($cep);
+        $response = CepRepository::getOneCep($cep);
 
-        return response()->json($cep, 200);
+        return response()->json($response, 200);
     }
 
     public function createAddress(Request $dataRequest)
     {
 
-        $address = CepRepository::createAddress($dataRequest);
+        $response = CepRepository::createAddress($dataRequest);
 
-        return response()->json($address, 200);
+        return response()->json($response, 200);
     }
 
     public function updateAddress(Request $dataRequest, $cep)
     {
 
-        $address = CepRepository::updateAddress($dataRequest, $cep);
+        $response = CepRepository::updateAddress($dataRequest, $cep);
 
-        return response()->json($address);
+        return response()->json($response);
     }
 
     public function deleteAddress($cep)
