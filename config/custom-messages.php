@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'not_found_address' => 'Nenhum endereço registrado na base de dados',
     'invalid_cep' => 'CEP inválido, insira um CEP de 8 números.',
     'address_not_found' => 'Endereço não encontrado',
     'validation_error' => 'Erro de validação',
