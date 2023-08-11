@@ -59,5 +59,29 @@ class CepRepository
         return $newAddress;
     }
 
+    public static function updateAddress($dataRequest, $cep) {
+        $data = $dataRequest->all();
 
+        $dataAddress = Validator::make($data, [
+            "cep" => "required|integer",
+            "public_place" => "required|string",
+            "complement" => "nullable",
+            "burgh" => 'required|string',
+            "locality" => "required|string",
+            "state_acronym" => "required|string"
+        ]);
+
+        if ($dataAddress->fails()) {
+            $errors = $dataAddress->errors();
+            return ['success' => false, 'message' => 'Erro de validação', 'errors' => $errors->all()];
+        }
+
+        $updatedRows = Address::where('cep', $cep)->update($dataAddress->validated());
+
+        if ($updatedRows > 0) {
+            return ['success' => true, 'message' => 'Endereço atualizado com sucesso'];
+        } else {
+            return ['success' => false, 'message' => 'Nenhum endereço foi atualizado'];
+        }
+    }
 }

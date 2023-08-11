@@ -8,3 +8,5 @@ Route::get('/{cep}', 'FrontendController@getOneCep')->name('getOneCep');
 
 Route::post('/newAddress', 'FrontendController@createAddress')->name('createAddress');
 
+Route::put('/updateAddress/{cep}', 'FrontendController@updateAddress')->name('updateAddress');
+
