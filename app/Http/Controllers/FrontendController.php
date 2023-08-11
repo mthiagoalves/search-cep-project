@@ -42,4 +42,16 @@ class FrontendController extends Controller
 
         return response()->json($address);
     }
+
+    public function deleteAddress($cep)
+    {
+
+        $response = CepRepository::deleteAddress($cep);
+
+        if ($response['success']) {
+            return response()->json(['message' => $response['message']], 200);
+        } else {
+            return response()->json(['message' => $response['message']], 400);
+        }
+    }
 }

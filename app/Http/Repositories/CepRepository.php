@@ -88,4 +88,20 @@ class CepRepository
             return ['success' => false, 'message' => 'Nenhum endereço foi atualizado'];
         }
     }
+
+    public static function deleteAddress($cep) {
+        
+        $address = Address::where('cep', $cep)->first();
+
+        if (!$address) {
+            return ['success' => false, 'message' => 'Endereço não encontrado'];
+        }
+
+        if ($address->delete()) {
+            return ['success' => true, 'message' => 'Endereço excluído com sucesso'];
+        } else {
+            return ['success' => false, 'message' => 'Erro ao excluir o endereço'];
+        }
+    }
+
 }

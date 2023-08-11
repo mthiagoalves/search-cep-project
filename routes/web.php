@@ -10,3 +10,5 @@ Route::post('/newAddress', 'FrontendController@createAddress')->name('createAddr
 
 Route::put('/updateAddress/{cep}', 'FrontendController@updateAddress')->name('updateAddress');
 
+Route::delete('/deleteAddress/{cep}', 'FrontendController@deleteAddress')->name('deleteAddress');
+
