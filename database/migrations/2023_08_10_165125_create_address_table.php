@@ -16,13 +16,9 @@ return new class extends Migration
             $table->string('cep', 10)->unique();
             $table->string('public_place');
             $table->string('complement')->nullable();
-            $table->string('urgh');
+            $table->string('burgh');
             $table->string('locality');
             $table->string('state_acronym', 2);
-            $table->string('ibge', 10);
-            $table->string('gia', 10)->nullable();
-            $table->string('ddd', 5)->nullable();
-            $table->string('siafi', 10)->nullable();
             $table->timestamps();
         });
     }
