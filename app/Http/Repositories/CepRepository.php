@@ -62,7 +62,7 @@ class CepRepository
         $data = $dataRequest->all();
 
         $dataAddress = Validator::make($data, [
-            "cep" => "required|integer",
+            "cep" => "required|string|size:8",
             "public_place" => "required|string",
             "complement" => "nullable",
             "burgh" => 'required|string',
