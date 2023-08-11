@@ -1,6 +1,6 @@
 <template>
-    <nav class="navbar mb-5">
-        <div class="navbar-brand">
+    <nav class="navbar mb-3 justify-content-center">
+        <div class="navbar-brand m-0">
             <p class="navbar-item" href="#">
                 {{ appName }}
             </p>

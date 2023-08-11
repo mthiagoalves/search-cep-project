@@ -1,56 +1,62 @@
 <template>
     <div class="container-fluid p-0 text-center">
-        <Navbar :appName="appName" />
-        <div class="container">
-            <h1>Lista de CEPs</h1>
-            <div class="row">
-                <div v-for="cep in ceps" :key="cep.id" class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ cep.cep }}</h5>
-                            <p class="card-text">
-                                Logradouro: {{ cep.public_place }}
-                            </p>
-                            <p class="card-text">
-                                Complemento: {{ cep.complement }}
-                            </p>
-                            <p class="card-text">Bairro: {{ cep.burgh }}</p>
-                            <p class="card-text">Localidade: {{ cep.locality }}</p>
-                            <p class="card-text">UF: {{ cep.state_acronym }}</p>
-                        </div>
-                    </div>
-                </div>
+      <Navbar :appName="appName" />
+      <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-6 p-0 text-start">
+                <a href="#" class="btn-new">Cadastrar Novo Endereço</a>
+            </div>
+            <div class="col-6 p-0 text-end">
+                <input type="text" placeholder="Buscar CEP">
             </div>
         </div>
-         <Footer :footerText="footerText" />
+        <h1 class="mb-3">Lista de CEPs</h1>
+        <div class="row">
+          <CepCard v-for="cep in ceps" :key="cep.id" :cep="cep" class="col-6 col-md-4 mb-4"/>
+        </div>
+      </div>
+      <Footer :footerText="footerText" />
     </div>
-</template>
+  </template>
 
-<script>
-import Navbar from "@/Components/Navbar.vue";
-import Footer from "@/Components/Footer.vue";
+  <script>
+  import Navbar from "@/Components/Navbar.vue";
+  import Footer from "@/Components/Footer.vue";
+  import CepCard from "@/Components/CepCard.vue";
 
-export default {
-  components: {
-    Navbar,
-    Footer
-  },
-  data() {
-    return {
-      appName: 'Buscar CEP',
-      footerText: '© 2023, Thiago Alves - Teste feito para empresa Creditares',
-    };
-  },
-  props: {
-    ceps: Array
-  }
-};
-</script>
-
-<style scoped>
-@media (min-width: 1280px){
-    .container {
-        max-width: 1100px;
+  export default {
+    components: {
+      Navbar,
+      Footer,
+      CepCard
+    },
+    data() {
+      return {
+        appName: "Buscar CEP",
+        footerText: "© 2023, Thiago Alves - Teste feito para empresa."
+      };
+    },
+    props: {
+      ceps: Array
     }
-}
-</style>
+  };
+  </script>
+
+  <style scoped>
+    .btn-new{
+        background-color: #f4f4f4;
+        border: .5px solid #198754;
+        padding: 11px;
+        transition: .5s ease-in-out;
+    }
+
+    .btn-new:hover{
+        background-color: #c2c6c6;
+    }
+
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1100px;
+    }
+  }
+  </style>
