@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('addresses', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('cep', 10)->unique();
             $table->string('public_place');
             $table->string('complement')->nullable();
