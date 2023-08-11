@@ -5,18 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Repositories\CepRepository;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class FrontendController extends Controller
 {
-    public function getAllCeps()
+    public function getAllCeps(): Response
     {
-        $allCeps = CepRepository::getAllCeps();
+        $ceps = CepRepository::getAllCeps();
 
-        if (count($allCeps) === 0) {
-            return response()->json(['message' => 'Nenhum CEP encontrado no banco de dados'], 404);
-        } else {
-            return response()->json($allCeps, 200);
-        }
+        return Inertia::render('Cep/Homepage', [
+            'ceps' => $ceps
+        ]);
     }
 
     public function getOneCep($cep)
