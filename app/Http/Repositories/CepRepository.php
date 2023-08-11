@@ -23,7 +23,13 @@ class CepRepository
 
     public static function getAllCeps()
     {
-        return Address::all();
+        $response = Address::all();
+
+        if(count($response) === 0){
+            return ['message' => Config::get('custom-messages.not_found_address')];
+        } else {
+            return $response;
+        }
     }
 
     public static function getOneCep($cep)
