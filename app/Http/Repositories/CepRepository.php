@@ -5,6 +5,7 @@ namespace App\Http\Repositories;
 use App\Models\Address;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Config;
 
 class CepRepository
 {
@@ -14,7 +15,7 @@ class CepRepository
         $cep = preg_replace('/\D/', '', $cep);
 
         if (strlen($cep) !== 8) {
-            return ['message' => 'CEP inválido, insira um CEP de 8 números.'];
+            return ['message' => Config::get('custom-messages.invalid_cep')];
         }
 
         return null;
@@ -42,12 +43,12 @@ class CepRepository
                 $data = json_decode($response);
 
                 if (isset($data->erro) && $data->erro === true) {
-                    return ['message' => 'CEP não encontrado'];
+                    return ['message' => Config::get('custom-messages.address_not_found')];
                 } else {
                     return $data;
                 }
             } else {
-                return ['message' => 'CEP não encontrado'];
+                return ['message' => Config::get('custom-messages.address_not_found')];
             }
         }
 
@@ -100,21 +101,21 @@ class CepRepository
 
         if ($dataAddress->fails()) {
             $errors = $dataAddress->errors();
-            return ['success' => false, 'message' => 'Erro de validação', 'errors' => $errors->all()];
+            return ['success' => false, 'message' => Config::get('custom-messages.validation_error'), 'errors' => $errors->all()];
         }
 
         $address = Address::where('cep', $cep)->first();
 
         if (!$address) {
-            return ['success' => false, 'message' => 'Endereço não encontrado'];
+            return ['success' => false, 'message' => Config::get('custom-messages.address_not_found')];
         }
 
         $address->fill($dataAddress->validated());
 
         if ($address->save()) {
-            return ['success' => true, 'message' => 'Endereço atualizado com sucesso'];
+            return ['success' => true, 'message' => Config::get('custom-messages.address_updated_success')];
         } else {
-            return ['success' => false, 'message' => 'Erro ao atualizar o endereço'];
+            return ['success' => false, 'message' => Config::get('custom-messages.address_updated_error')];
         }
     }
 
@@ -130,13 +131,13 @@ class CepRepository
         $address = Address::where('cep', $cep)->first();
 
         if (!$address) {
-            return ['success' => false, 'message' => 'Endereço não encontrado'];
+            return ['success' => false, 'message' => Config::get('custom-messages.address_not_found')];
         }
 
         if ($address->delete()) {
-            return ['success' => true, 'message' => 'Endereço excluído com sucesso'];
+            return ['success' => true, 'message' => Config::get('custom-messages.address_deleted_success')];
         } else {
-            return ['success' => false, 'message' => 'Erro ao excluir o endereço'];
+            return ['success' => false, 'message' => Config::get('custom-messages.address_deleted_error')];
         }
     }
 }
