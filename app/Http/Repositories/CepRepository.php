@@ -64,7 +64,6 @@ class CepRepository
 
     public static function createAddress($dataRequest)
     {
-
         $data = $dataRequest->all();
 
         $dataAddress = Validator::make($data, [
@@ -78,14 +77,14 @@ class CepRepository
 
         if ($dataAddress->fails()) {
             $errors = $dataAddress->errors();
-
             return ['errors' => $errors->all()];
         }
 
-        $newAddress = Address::create($dataAddress->validated());
+        $newAddress = Address::create($data);
 
         return $newAddress;
     }
+
 
     public static function updateAddress($dataRequest, $cep)
     {
