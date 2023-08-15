@@ -10,27 +10,40 @@
         </div>
         <div class="row justify-content-between my-3">
             <div class="col-4 p-0">
-                <a href="" class="btn-update">Atualizar</a>
+                <a class="btn btn-success" @click="openUpdateModal">Atualizar</a>
             </div>
             <div class="col-4 p-0">
-                <a class="btn-delete" data-toggle="modal" data-target="#deleteCepModal">Deletar</a>
+                <a class="btn btn-danger" @click="openDeleteModal">Deletar</a>
             </div>
         </div>
+        <CepUpdateModal :cep="cep" :on-update="onUpdate" />
         <CepDeleteModal :cep="cep" :on-delete="onDelete" />
     </div>
 </template>
 
 <script>
 import CepDeleteModal from "@/Components/CepDeleteModal.vue";
+import CepUpdateModal from "@/Components/CepUpdateModal.vue";
+
 
 export default {
     props: {
         cep: Object
     },
     components: {
-        CepDeleteModal
+        CepDeleteModal,
+        CepUpdateModal
     },
     methods: {
+        openUpdateModal() {
+            $("#updateCepModal").modal("show");
+        },
+        onUpdate(cep) {
+            console.log("Atualizando o CEP:", cep);
+        },
+        openDeleteModal() {
+            $("#deleteCepModal").modal("show");
+        },
         onDelete(cep) {
             console.log("Deletando o CEP:", cep);
         }
@@ -39,29 +52,6 @@ export default {
 </script>
 
 <style scoped>
-.btn-update {
-    background-color: #196a877a;
-    border: .5px solid #47b4dc;
-    padding: 11px;
-    cursor: pointer;
-    transition: .5s ease-in-out;
-}
-
-.btn-update:hover {
-    background-color: #47b4dc;
-}
-
-.btn-delete {
-    background-color: #cd5d7f7a;
-    border: .5px solid #fd86aa;
-    padding: 11px;
-    cursor: pointer;
-    transition: .5s ease-in-out;
-}
-
-.btn-delete:hover {
-    background-color: #fd86aa;
-}
 
 .card {
     margin-bottom: 1rem;

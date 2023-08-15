@@ -4,7 +4,7 @@
       <div class="container">
         <div class="row justify-content-between align-items-center">
             <div class="col-6 p-0 text-start">
-                <a href="#" class="btn-new">Cadastrar Novo Endereço</a>
+                <a href="#" class="btn btn-info">Cadastrar Novo Endereço</a>
             </div>
             <div class="col-6 p-0 text-end">
                 <input type="text" placeholder="Buscar CEP">
