@@ -66,6 +66,12 @@ class CepRepository
     {
         $data = $dataRequest->all();
 
+        $existingAddress = Address::where('cep', $data['cep'])->first();
+
+        if ($existingAddress) {
+            return response()->json(['message' => Config::get('custom-messages.address_exist_in_db'), 'error' => 400], 400);
+        }
+
         $dataAddress = Validator::make($data, [
             "cep" => "required|string|size:8",
             "public_place" => "required|string",
@@ -77,13 +83,14 @@ class CepRepository
 
         if ($dataAddress->fails()) {
             $errors = $dataAddress->errors();
-            return ['errors' => $errors->all()];
+            return response()->json(['message' => Config::get('custom-messages.field_must_8_characters'), 'error' => $errors->all()], 400);
         }
 
         $newAddress = Address::create($data);
 
         return $newAddress;
     }
+
 
 
     public static function updateAddress($dataRequest, $cep)

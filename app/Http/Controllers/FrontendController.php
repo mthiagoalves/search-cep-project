@@ -31,11 +31,7 @@ class FrontendController extends Controller
     {
         $response = CepRepository::createAddress($dataRequest);
 
-        if (isset($response['errors'])) {
-            return response()->json($response, 400);
-        }
-
-        return response()->json($response, 200);
+        return $response;
     }
 
     public function updateAddress(Request $dataRequest, $cep)
