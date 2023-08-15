@@ -11,6 +11,10 @@
                 <div class="modal-body">
                     <form @submit.prevent="updateCep">
                         <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" class="form-control" id="cep" v-model="updatedCep.cep">
+                        </div>
+                        <div class="form-group">
                             <label for="publicPlace">Logradouro</label>
                             <input type="text" class="form-control" id="publicPlace" v-model="updatedCep.public_place">
                         </div>
@@ -51,6 +55,7 @@ export default {
     data() {
         return {
             updatedCep: {
+                cep: this.cep.cep,
                 public_place: this.cep.public_place,
                 complement: this.cep.complement,
                 burgh: this.cep.burgh,
@@ -86,4 +91,5 @@ export default {
 
 .btn-secondary:hover {
     background-color: #5c636a;
-}</style>
+}
+</style>

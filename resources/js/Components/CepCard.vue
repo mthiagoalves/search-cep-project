@@ -9,10 +9,10 @@
             <p class="card-text">UF: {{ cep.state_acronym }}</p>
         </div>
         <div class="row justify-content-between my-3">
-            <div class="col-4 p-0">
+            <div class="col-12 col-sm-4 mb-2 m-sm-0 p-0">
                 <a class="btn btn-success" @click="openUpdateModal">Atualizar</a>
             </div>
-            <div class="col-4 p-0">
+            <div class="col-12 col-sm-4 p-0">
                 <a class="btn btn-danger" @click="openDeleteModal">Deletar</a>
             </div>
         </div>
