@@ -28,7 +28,8 @@ import CepUpdateModal from "@/Components/CepUpdateModal.vue";
 
 export default {
     props: {
-        cep: Object
+        cep: Object,
+        onCreate: Function
     },
     components: {
         CepDeleteModal,

@@ -36,7 +36,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" @click="hideModal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="submit" class="btn btn-primary" @click="createCep">Salvar</button>
                         </div>
                     </form>
                 </div>
@@ -60,12 +60,29 @@ export default {
         };
     },
     methods: {
-        createCep() {
-            this.onCreate(this.newCep);
+        hideModal() {
             $("#createCepModal").modal("hide");
         },
-        hideModal() {
-            $("#deleteCepModal").modal("hide");
+        async createCep() {
+            this.hideModal();
+            try {
+                const response = await fetch('/newAddress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.newCep)
+                });
+
+                if (response.ok) {
+                    console.log(response);
+
+                } else {
+                    console.error('Erro ao criar CEP');
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+            }
         }
     }
 };
