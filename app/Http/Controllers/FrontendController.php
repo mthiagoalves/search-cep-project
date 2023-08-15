@@ -39,7 +39,7 @@ class FrontendController extends Controller
 
         $response = CepRepository::updateAddress($dataRequest, $cep);
 
-        return response()->json($response);
+        return $response;
     }
 
     public function deleteAddress($cep)

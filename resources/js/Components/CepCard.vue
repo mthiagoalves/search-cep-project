@@ -10,14 +10,14 @@
         </div>
         <div class="row justify-content-between my-3">
             <div class="col-12 col-sm-4 mb-2 m-sm-0 p-0">
-                <a class="btn btn-success" @click="openUpdateModal">Atualizar</a>
+                <a class="btn btn-success" @click="openUpdateModal(cep.id)">Atualizar</a>
             </div>
             <div class="col-12 col-sm-4 p-0">
-                <a class="btn btn-danger" @click="openDeleteModal">Deletar</a>
+                <a class="btn btn-danger" @click="openDeleteModal(cep.id)">Deletar</a>
             </div>
         </div>
-        <CepUpdateModal :cep="cep" :on-update="onUpdate" />
-        <CepDeleteModal :cep="cep" :on-delete="onDelete" />
+        <CepUpdateModal :cep="cep" :cep-id="cep.id" :on-update="onUpdate" />
+        <CepDeleteModal :cep="cep" :cep-id="cep.id" :on-delete="onDelete" />
     </div>
 </template>
 
@@ -36,14 +36,14 @@ export default {
         CepUpdateModal
     },
     methods: {
-        openUpdateModal() {
-            $("#updateCepModal").modal("show");
+        openUpdateModal(cepId) {
+            $("#updateCepModal-" + cepId).modal("show");
         },
         onUpdate(cep) {
             console.log("Atualizando o CEP:", cep);
         },
-        openDeleteModal() {
-            $("#deleteCepModal").modal("show");
+        openDeleteModal(cepId) {
+            $("#deleteCepModal-" + cepId).modal("show");
         },
         onDelete(cep) {
             console.log("Deletando o CEP:", cep);

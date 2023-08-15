@@ -1,10 +1,10 @@
 <template>
-    <div class="modal fade" tabindex="-1" role="dialog" id="updateCepModal">
+    <div class="modal fade" tabindex="-1" role="dialog" :id="'updateCepModal-' + cep.id">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Atualizar CEP</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" @click="hideModal">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar" @click="hideUpdateModal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                @click="hideModal">Cancelar</button>
+                                @click="hideUpdateModal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
                     </form>
@@ -55,6 +55,7 @@ export default {
     data() {
         return {
             updatedCep: {
+                id: this.cep.id,
                 cep: this.cep.cep,
                 public_place: this.cep.public_place,
                 complement: this.cep.complement,
@@ -65,12 +66,54 @@ export default {
         };
     },
     methods: {
-        updateCep() {
-            this.onUpdate(this.updatedCep);
-            $("#updateCepModal").modal("hide");
+        hideUpdateModal() {
+            $(`#updateCepModal-${this.cep.id}`).modal("hide");
         },
-        hideModal() {
-            $("#updateCepModal").modal("hide");
+        async updateCep() {
+            this.hideUpdateModal();
+            try {
+                const response = await fetch(`/updateAddress/${this.cep.cep}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.updatedCep)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    Swal.fire(
+                        'Sucesso!',
+                        'Endereço atualizado com sucesso.',
+                        'success'
+                    ).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: data.message,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Não conseguimos atualizar o endereço: ' + error,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            }
         }
     }
 };

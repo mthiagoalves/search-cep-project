@@ -15,7 +15,7 @@ class CepRepository
         $cep = preg_replace('/\D/', '', $cep);
 
         if (strlen($cep) !== 8) {
-            return ['message' => Config::get('custom-messages.invalid_cep')];
+            return ['message' => Config::get('custom-messages.field_must_8_characters'), 400];
         }
 
         return null;
@@ -25,7 +25,7 @@ class CepRepository
     {
         $response = Address::all();
 
-        if(count($response) === 0){
+        if (count($response) === 0) {
             return ['message' => Config::get('custom-messages.not_found_address')];
         } else {
             return $response;
@@ -69,7 +69,7 @@ class CepRepository
         $existingAddress = Address::where('cep', $data['cep'])->first();
 
         if ($existingAddress) {
-            return response()->json(['message' => Config::get('custom-messages.address_exist_in_db'), 'error' => 400], 400);
+            return response()->json(['message' => Config::get('custom-messages.address_exist_in_db')], 400);
         }
 
         $dataAddress = Validator::make($data, [
@@ -91,19 +91,12 @@ class CepRepository
         return $newAddress;
     }
 
-
-
     public static function updateAddress($dataRequest, $cep)
     {
-        $validationResult = self::validateCep($cep);
-        if ($validationResult) {
-            return $validationResult;
-        }
-
         $data = $dataRequest->all();
 
         $dataAddress = Validator::make($data, [
-            "cep" => "required|integer",
+            "cep" => "required|string|size:8",
             "public_place" => "required|string",
             "complement" => "nullable",
             "burgh" => 'required|string',
@@ -113,23 +106,31 @@ class CepRepository
 
         if ($dataAddress->fails()) {
             $errors = $dataAddress->errors();
-            return ['success' => false, 'message' => Config::get('custom-messages.validation_error'), 'errors' => $errors->all()];
+            return response()->json(['message' => Config::get('custom-messages.field_must_8_characters'), 'error' => $errors->all()], 400);
+        }
+
+        $existingAddress = Address::where('cep', $data['cep'])->whereNotIn('cep', [$cep])->first();
+
+        if ($existingAddress) {
+            return response()->json(['message' => Config::get('custom-messages.address_exist_in_db')], 400);
         }
 
         $address = Address::where('cep', $cep)->first();
 
         if (!$address) {
-            return ['success' => false, 'message' => Config::get('custom-messages.address_not_found')];
+            return response()->json(['message' => Config::get('custom-messages.address_not_found')], 400);
         }
 
         $address->fill($dataAddress->validated());
 
+        $address->save();
         if ($address->save()) {
             return ['success' => true, 'message' => Config::get('custom-messages.address_updated_success')];
         } else {
             return ['success' => false, 'message' => Config::get('custom-messages.address_updated_error')];
         }
     }
+
 
 
     public static function deleteAddress($cep)
