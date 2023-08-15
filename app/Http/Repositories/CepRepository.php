@@ -15,7 +15,7 @@ class CepRepository
         $cep = preg_replace('/\D/', '', $cep);
 
         if (strlen($cep) !== 8) {
-            return ['message' => Config::get('custom-messages.field_must_8_characters'), 400];
+            return response()->json(['message' => Config::get('custom-messages.field_must_8_characters')], 400);
         }
 
         return null;
@@ -33,16 +33,19 @@ class CepRepository
     }
 
     public static function getOneCep($cep)
-    {
-        $validationResult = self::validateCep($cep);
+{
+
+    $validationResult = self::validateCep($cep);
         if ($validationResult) {
             return $validationResult;
         }
+        
+    $findedCep = Address::where('cep', $cep)->get();
 
-        $findedCep = Address::where('cep', $cep)->get();
+    if ($findedCep->isEmpty()) {
+        $apiUrl = 'https://viacep.com.br/ws/' . $cep . '/json/';
 
-        if ($findedCep->isEmpty()) {
-            $apiUrl = 'https://viacep.com.br/ws/' . $cep . '/json/';
+        try {
             $response = file_get_contents($apiUrl);
 
             if ($response) {
@@ -56,10 +59,14 @@ class CepRepository
             } else {
                 return ['message' => Config::get('custom-messages.address_not_found')];
             }
+        } catch (\ErrorException $e) {
+            return ['message' => 'Erro ao buscar o CEP: ' . $cep];
         }
-
-        return $findedCep;
     }
+
+    return $findedCep;
+}
+
 
 
     public static function createAddress($dataRequest)
@@ -130,8 +137,6 @@ class CepRepository
             return ['success' => false, 'message' => Config::get('custom-messages.address_updated_error')];
         }
     }
-
-
 
     public static function deleteAddress($cep)
     {

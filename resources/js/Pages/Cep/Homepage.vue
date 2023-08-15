@@ -10,10 +10,12 @@
                     <a class="btn btn-info w-100" @click="openCreateModal">Cadastrar Novo Endereço</a>
                 </div>
                 <div class="col-6 p-0 text-end d-none d-sm-block">
-                    <input type="text" placeholder="Buscar CEP">
+                    <input type="text" placeholder="Buscar CEP" v-model="searchedCep">
+                    <button class="btn btn-primary" @click="findCep">Buscar</button>
                 </div>
                 <div class="col-12 col-sm-6 p-0 px-2 mb-3 d-block d-sm-none">
-                    <input type="text" placeholder="Buscar CEP" class="form-control">
+                    <input type="text" placeholder="Buscar CEP" class="form-control" v-model="searchedCep">
+                    <button class="btn btn-primary" @click="findCep">Buscar</button>
                 </div>
             </div>
             <h1 class="mb-3">Lista de CEPs</h1>
@@ -22,7 +24,23 @@
             </div>
         </div>
         <CepCreateModal :cep="cep" :on-create="onCreate" />
-
+        <div class="modal fade" tabindex="-1" role="dialog" id="searchedCepModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detalhes do CEP</h5>
+                        <button type="button" class="close" aria-label="Fechar" @click="closeSearchedModal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p v-if="searchedCep">CEP: {{ cep }}</p>
+                        <p v-if="searchedCep">Logradouro: {{ public_place }}</p>
+                        <!-- ...outros campos... -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <Footer :footerText="footerText" />
 </template>
@@ -43,7 +61,10 @@ export default {
     data() {
         return {
             appName: "Buscar CEP",
-            footerText: "© 2023, Thiago Alves - Teste feito para empresa."
+            footerText: "© 2023, Thiago Alves - Teste feito para empresa.",
+            searchedCep: "",
+            searchedCepDetails: null,
+            searchedModalVisible: false
         };
     },
     props: {
@@ -70,6 +91,30 @@ export default {
             } catch (error) {
                 console.error('Erro na requisição:', error);
             }
+        },
+        async findCep() {
+            try {
+                const response = await fetch(`/${this.searchedCep}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    this.searchedCepDetails = data;
+                    $("#searchedCepModal").modal("show"); // Exibe o modal
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Erro ao buscar CEP',
+                        text: data.message,
+                    });
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+            }
+        },
+
+        closeSearchedModal() {
+            this.searchedCepDetails = null; // Limpa os detalhes do CEP
+            $("#searchedCepModal").modal("hide"); // Fecha o modal
         }
     }
 };
@@ -87,7 +132,7 @@ export default {
     background-color: #c2c6c6;
 }
 
-.header-padding{
+.header-padding {
     padding-bottom: 70px !important;
 }
 </style>
