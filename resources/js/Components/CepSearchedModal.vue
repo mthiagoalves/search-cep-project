@@ -10,11 +10,11 @@
                 </div>
                 <div class="modal-body">
                     <p v-if="cepDetails">CEP: {{ cepDetails.cep }}</p>
-                    <p v-if="cepDetails">Logradouro: {{ cepDetails.logradouro }}</p>
-                    <p v-if="cepDetails">Complemento: {{ cepDetails.complemento }}</p>
-                    <p v-if="cepDetails">Bairro: {{ cepDetails.bairro }}</p>
-                    <p v-if="cepDetails">Localidade: {{ cepDetails.localidade }}</p>
-                    <p v-if="cepDetails">UF: {{ cepDetails.uf }}</p>
+                    <p v-if="cepDetails">Logradouro: {{ cepDetails.logradouro ? `${cepDetails.logradouro}` : `${cepDetails.public_place}` }}</p>
+                    <p v-if="cepDetails">Complemento: {{ cepDetails.complemento ? `${cepDetails.complemento}` : (cepDetails.complement ? `${cepDetails.complement}` : '') }}</p>
+                    <p v-if="cepDetails">Bairro: {{ cepDetails.bairro ? `${cepDetails.bairro}` : `${cepDetails.burgh}` }}</p>
+                    <p v-if="cepDetails">Localidade: {{ cepDetails.localidade ? `${cepDetails.localidade}` : `${cepDetails.locality}` }}</p>
+                    <p v-if="cepDetails">UF: {{ cepDetails.uf ? `${cepDetails.uf}` : `${cepDetails.state_acronym}` }}</p>
                 </div>
             </div>
         </div>

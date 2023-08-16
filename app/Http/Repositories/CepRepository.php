@@ -33,39 +33,39 @@ class CepRepository
     }
 
     public static function getOneCep($cep)
-{
+    {
 
-    $validationResult = self::validateCep($cep);
+        $validationResult = self::validateCep($cep);
         if ($validationResult) {
             return $validationResult;
         }
-        
-    $findedCep = Address::where('cep', $cep)->get();
 
-    if ($findedCep->isEmpty()) {
-        $apiUrl = 'https://viacep.com.br/ws/' . $cep . '/json/';
+        $findedCep = Address::where('cep', $cep)->get();
 
-        try {
-            $response = file_get_contents($apiUrl);
+        if ($findedCep->isEmpty()) {
+            $apiUrl = 'https://viacep.com.br/ws/' . $cep . '/json/';
 
-            if ($response) {
-                $data = json_decode($response);
+            try {
+                $response = file_get_contents($apiUrl);
 
-                if (isset($data->erro) && $data->erro === true) {
-                    return ['message' => Config::get('custom-messages.address_not_found')];
+                if ($response) {
+                    $data = json_decode($response);
+
+                    if (isset($data->erro) && $data->erro === true) {
+                        return ['message' => Config::get('custom-messages.address_not_found')];
+                    } else {
+                        return $data;
+                    }
                 } else {
-                    return $data;
+                    return ['message' => Config::get('custom-messages.address_not_found')];
                 }
-            } else {
-                return ['message' => Config::get('custom-messages.address_not_found')];
+            } catch (\ErrorException $e) {
+                return ['message' => 'Erro ao buscar o CEP: ' . $cep];
             }
-        } catch (\ErrorException $e) {
-            return ['message' => 'Erro ao buscar o CEP: ' . $cep];
         }
-    }
 
-    return $findedCep;
-}
+        return $findedCep;
+    }
 
 
 

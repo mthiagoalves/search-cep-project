@@ -109,7 +109,12 @@ export default {
                 const data = await response.json();
 
                 if (response.ok) {
-                    this.searchedCepDetails = data;
+                    if (Array.isArray(data) && data.length === 1) {
+                        this.searchedCepDetails = data[0];
+                        console.log(this.searchedCepDetails);
+                    } else {
+                        this.searchedCepDetails = data;
+                    }
                     $("#searchedCepModal").modal("show");
                 } else {
                     Swal.fire({
