@@ -34,13 +34,13 @@ class CepRepository
 
     public static function getOneCep($cep)
     {
-
         $validationResult = self::validateCep($cep);
         if ($validationResult) {
             return $validationResult;
         }
 
         $findedCep = Address::where('cep', $cep)->get();
+
 
         if ($findedCep->isEmpty()) {
             $apiUrl = 'https://viacep.com.br/ws/' . $cep . '/json/';
@@ -52,22 +52,25 @@ class CepRepository
                     $data = json_decode($response);
 
                     if (isset($data->erro) && $data->erro === true) {
-                        return ['message' => Config::get('custom-messages.address_not_found')];
+                        return response()->json(['message' => Config::get('custom-messages.address_not_found')], 400);
                     } else {
+                        $data->source = 'api';
                         return $data;
                     }
                 } else {
-                    return ['message' => Config::get('custom-messages.address_not_found')];
+                    return response()->json(['message' => Config::get('custom-messages.address_not_found')], 400);
                 }
-            } catch (\ErrorException $e) {
+            } catch (\ErrorException) {
                 return ['message' => 'Erro ao buscar o CEP: ' . $cep];
             }
         }
 
+        foreach ($findedCep as $cepData) {
+            $cepData->source = 'database';
+        }
+
         return $findedCep;
     }
-
-
 
     public static function createAddress($dataRequest)
     {
@@ -132,9 +135,9 @@ class CepRepository
 
         $address->save();
         if ($address->save()) {
-            return ['success' => true, 'message' => Config::get('custom-messages.address_updated_success')];
+            return response()->json(['message' => Config::get('custom-messages.address_updated_success')], 200);
         } else {
-            return ['success' => false, 'message' => Config::get('custom-messages.address_updated_error')];
+            return response()->json(['message' => Config::get('custom-messages.address_updated_error')], 400);
         }
     }
 
@@ -149,13 +152,13 @@ class CepRepository
         $address = Address::where('cep', $cep)->first();
 
         if (!$address) {
-            return ['success' => false, 'message' => Config::get('custom-messages.address_not_found')];
+            return response()->json(['message' => Config::get('custom-messages.address_not_found')], 400);
         }
 
         if ($address->delete()) {
-            return ['success' => true, 'message' => Config::get('custom-messages.address_deleted_success')];
+            return response()->json(['message' => Config::get('custom-messages.address_deleted_success')], 200);
         } else {
-            return ['success' => false, 'message' => Config::get('custom-messages.address_deleted_error')];
+            return response()->json(['message' => Config::get('custom-messages.address_deleted_error')], 400);
         }
     }
 }
