@@ -1,5 +1,5 @@
 <template>
-    <div class="card p-3">
+    <div class="card p-3 col-6 col-md-4 mb-1">
         <div class="card-body p-0">
             <h5 class="card-title">{{ cep.cep }}</h5>
             <p class="card-text">Logradouro: {{ cep.public_place }}</p>

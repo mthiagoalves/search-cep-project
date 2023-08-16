@@ -98,7 +98,7 @@
                             if (result.isConfirmed) {
                                 location.reload();
                             }
-                        });;
+                        });
                     }
                 } catch (error) {
                     Swal.fire({
@@ -109,7 +109,7 @@
                         if (result.isConfirmed) {
                             location.reload();
                         }
-                    });;
+                    });
                 }
             }
         }
