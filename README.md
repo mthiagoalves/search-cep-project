@@ -57,7 +57,7 @@ php artisan serve
 2. Inicie o servidor frontend (Vue.js):
 
 ```bash
-npm start dev
+npm run dev
 ```
 
 🟩 Acesse a aplicação no navegador:
@@ -67,5 +67,5 @@ npm start dev
 
 - Acesse a página para listar os endereços cadastrados, cadastrar novos endereços, editar e excluir.
 
-- Utilize a funcionalidade de busca para pesquisar endereços já cadastrados por CEP ou Logradouro.
+- Utilize a funcionalidade de busca para pesquisar endereços já cadastrados ou pela API por CEP ou Logradouro.
 
