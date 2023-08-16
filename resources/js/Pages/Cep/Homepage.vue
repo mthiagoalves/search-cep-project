@@ -13,11 +13,14 @@
                         >Cadastrar Novo Endereço</a
                     >
                 </div>
-                <div class="col-6 p-0 text-end d-none d-sm-block">
+                <div class="col-4 p-0 text-end d-none d-sm-block search">
+                    <i class="fa fa-search"></i>
                     <input
                         type="text"
                         placeholder="Buscar CEP"
                         v-model="searchedCep"
+                        @keyup.enter="findCep"
+                        class="form-control"
                     />
                     <button class="btn btn-primary" @click="findCep">
                         Buscar
@@ -41,15 +44,18 @@
                     v-for="cep in ceps"
                     :key="cep.id"
                     :cep="cep"
+                    v-if="ceps.length > 0"
                     :on-create="updateCeps"
-                    class="col-6 col-md-4 mb-1"
                 />
+                <div v-else class="col-12">
+                    <p>Nenhum CEP cadastrado</p>
+                </div>
             </div>
         </div>
         <CepCreateModal :cep="cep" :on-create="onCreate" />
         <CepSearchedModal
             :cep-details="searchedCepDetails"
-            @close-modal="closeSearchedModal"
+            @hide-modal="HideSearchedModal"
         />
     </div>
     <Footer :footerText="footerText" />
@@ -109,9 +115,9 @@ export default {
                 const data = await response.json();
 
                 if (response.ok) {
+                    console.log(data);
                     if (Array.isArray(data) && data.length === 1) {
                         this.searchedCepDetails = data[0];
-                        console.log(this.searchedCepDetails);
                     } else {
                         this.searchedCepDetails = data;
                     }
@@ -127,7 +133,7 @@ export default {
                 console.error("Erro na requisição:", error);
             }
         },
-        closeSearchedModal() {
+        HideSearchedModal() {
             this.searchedCepDetails = null;
             $("#searchedCepModal").modal("hide");
         },
@@ -149,5 +155,26 @@ export default {
 
 .header-padding {
     padding-bottom: 70px !important;
+}
+.search {
+    position: relative;
+    max-width: 50%;
+}
+
+.search .fa-search {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+}
+
+.search input {
+    text-indent: 25px;
+    border: 2px solid #d6d4d4;
+}
+
+.search button {
+    position: absolute;
+    right: 3px;
+    top: 3px;
 }
 </style>
