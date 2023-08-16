@@ -43,7 +43,7 @@
                 </div>
             </div>
             <h1 class="mb-3">Lista de CEPs</h1>
-            <div class="row p-2 p-sm-0">
+            <div class="row p-2 pt-0 p-sm-0">
                 <CepCard
                     v-for="cep in ceps"
                     :key="cep.id"
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <CepCreateModal :cep="cep" :on-create="onCreate" />
+        <CepCreateModal/>
         <CepSearchedModal
             :cep-details="searchedCepDetails"
             @hide-modal="HideSearchedModal"
@@ -95,9 +95,6 @@ export default {
     methods: {
         openCreateModal() {
             $("#createCepModal").modal("show");
-        },
-        onCreate(cep) {
-            console.log("Criando o CEP:", cep);
         },
         async updateCeps() {
             try {
