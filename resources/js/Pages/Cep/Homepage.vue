@@ -26,12 +26,16 @@
                         Buscar
                     </button>
                 </div>
-                <div class="col-12 col-sm-6 p-0 px-2 mb-3 d-block d-sm-none">
+                <div
+                    class="col-12 col-sm-6 p-0 px-2 mb-3 d-block d-sm-none search"
+                >
+                    <i class="fa fa-search"></i>
                     <input
                         type="text"
                         placeholder="Buscar CEP"
-                        class="form-control"
                         v-model="searchedCep"
+                        @keyup.enter="findCep"
+                        class="form-control"
                     />
                     <button class="btn btn-primary" @click="findCep">
                         Buscar
@@ -158,7 +162,6 @@ export default {
 }
 .search {
     position: relative;
-    max-width: 50%;
 }
 
 .search .fa-search {
@@ -176,5 +179,18 @@ export default {
     position: absolute;
     right: 3px;
     top: 3px;
+}
+
+@media (max-width: 756px) {
+    .search .fa-search {
+        position: absolute;
+        top: 12px;
+        left:20px;
+    }
+    .search button {
+        position: absolute;
+        right: 10px;
+        top: 3px;
+    }
 }
 </style>
