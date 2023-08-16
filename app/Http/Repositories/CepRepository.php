@@ -34,12 +34,9 @@ class CepRepository
 
     public static function getOneCep($cep)
     {
-        $validationResult = self::validateCep($cep);
-        if ($validationResult) {
-            return $validationResult;
-        }
-
-        $findedCep = Address::where('cep', $cep)->get();
+        $findedCep = Address::where('cep', $cep)
+        ->orWhere('public_place', 'LIKE', '%' . $cep . '%')
+        ->get();
 
 
         if ($findedCep->isEmpty()) {
